@@ -29,9 +29,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
 
     @IBAction func recordAudio(_ sender: Any) {
-        recordingLabel.text = "Recording in Progress"
-        recordButton.isEnabled  = false
-        stopRecordingButton.isEnabled = true
+        setupViewState(true)
         
         let directoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let fileName = "recording.wav"
@@ -50,9 +48,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
 
     @IBAction func stopRecording(_ sender: Any) {
-        recordingLabel.text = "Tap to Record"
-        recordButton.isEnabled = true
-        stopRecordingButton.isEnabled = false
+        setupViewState(false)
         
         audioRecorder.stop()
         let audioSession = AVAudioSession.sharedInstance()
@@ -74,6 +70,33 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             
             playSoundsVC.recordedAudioURL = recordedAudioURL
         }
+    }
+    
+    /**
+     * sets the view properties for the corresponding state: recording or not
+     */
+    func setupViewState(_ isRecording: Bool) {
+        setRecordingLabelText(isRecording)
+        setButtonsStates(isRecording)
+    }
+    
+    /*
+     * sets the appropriate recording label text depending on whether or not a recording is going on
+     */
+    func setRecordingLabelText(_ isRecording: Bool) {
+        if (isRecording) {
+            recordingLabel.text = "Recording in Progress"
+        } else {
+            recordingLabel.text = "Tap to Record"
+        }
+    }
+    
+    /*
+     * sets the appropriate states for the buttons depending
+     */
+    func setButtonsStates(_ isRecording: Bool) {
+        recordButton.isEnabled  = !isRecording
+        stopRecordingButton.isEnabled = isRecording
     }
 }
 
