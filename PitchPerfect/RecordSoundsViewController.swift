@@ -59,7 +59,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         if flag {
             performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
         } else {
-            print("Audio recorder didn't save successfully")
+            showRecordErrorAlert()
         }
     }
     
@@ -70,6 +70,16 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
             
             playSoundsVC.recordedAudioURL = recordedAudioURL
         }
+    }
+    
+    /*
+     * shows an alert when an error occurs with the recording
+     */
+    func showRecordErrorAlert() {
+        let alertController = UIAlertController(title: "Unable to record", message: "",
+                                                preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     /**
